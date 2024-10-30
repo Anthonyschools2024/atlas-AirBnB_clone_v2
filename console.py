@@ -94,21 +94,25 @@ class HBNBCommand(cmd.Cmd):
         print(instance)
 
     def do_all(self, arg):
-        """ Show all instances of a class """
+        """Prints all string representation of all instances based or not on the class name"""
         args = arg.split()
-        # if its not in args then show all
-        if not args:
-            instances = storage.all()
-        else:
-            # if is in args show all that class
-            class_name = args[0]
-            if class_name not in globals():
-                print("** class doesn't exist **")
-                return
-            instances = storage.all(globals()[class_name])
-        # print instances
-        for instance in instances.values():
-            print(instance)
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        class_name = args[0]
+        if class_name not in HBNBCommand.classes:
+           print("** class doesn't exist **")
+           return
+        # searcg in HBNCommand classes
+        instances = storage.all(HBNBCommand.classes[class_name])
+        # iterate through instances
+        for key, obj in instances.items():
+            obj_dict = obj.__dict__.copy()
+            # remove sa instance
+            if '_sa_instance_state' in obj_dict:
+                del obj_dict['_sa_instance_state']
+                # print class name, id, and dict
+            print(f"[{obj.__class__.__name__}] ({obj.id}) {obj_dict}")
 
     def do_destroy(self, arg):
         """ Destroy an instance based on class name and id """
