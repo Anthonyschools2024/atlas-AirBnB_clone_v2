@@ -12,8 +12,8 @@ class BaseModel:
     """A base class for all hbnb models"""
     # added id, created at, updated at
     id = Column(String(60), primary_key=True, nullable=False, unique=True, index=True, default=lambda: str(uuid.uuid4()))
-    created_at = Column(DateTime, nullable=False, default=datetime.now())
-    updated_at = Column(DateTime, nullable=False, default=datetime.now())
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     # -------------------------------------
     def __init__(self, *args, **kwargs):
@@ -42,20 +42,20 @@ class BaseModel:
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         from models import storage
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.utcnow()
+        storage.new(self)
         storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = {}
-        # skip sa instance state, not json serializable
-        for key, value in self.__dict__.items():
-            if key != '_sa_instance_state':
-                if isinstance(value, datetime):
-                    dictionary[key] = value
-        dictionary['__class__'] = self.__class__.__name__
+        dictionary.update(self.__dict__)
+        dictionary.update({'__class__': (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        if '_sa_instance_state' in dictionary:
+            del dictionary['_sa_instance_state']
+        return dictionary
 
     def delete(self):
         """ delete current instance from storage """
