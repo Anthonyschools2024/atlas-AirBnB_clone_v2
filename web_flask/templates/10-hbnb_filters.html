@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HBNB</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/3-header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/3-footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/4-common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/6-filters.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="HBNB logo">
+            </div>
+            <div class="title">
+                <h1>HBNB</h1>
+            </div>
+        </div>
+    </header>
+    <div class="filters">
+        <div class="container">
+            <h3>States</h3>
+            <h4>&nbsp;</h4>
+            <ul>
+                {% for state in states %}
+                <li>{{ state.name }}
+                    <ul>
+                        {% for city in state.cities %}
+                        <li>{{ city.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endfor %}
+            </ul>
+            <h3>Amenities</h3>
+            <h4>&nbsp;</h4>
+            <ul>
+                {% for amenity in amenities %}
+                <li>{{ amenity.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 HBNB</p>
+        </div>
+    </footer>
+</body>
+</html>
