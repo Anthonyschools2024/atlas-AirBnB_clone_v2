@@ -92,6 +92,10 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         # create session, use scoped session for safety
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        # save session
-        self.__session = Session()
+        self.__session = scoped_session(session_factory)
+
+    # ------------------------
+    def close(self):
+        """ Call remove() """
+        self.__session.remove()
+    # ------------------------

@@ -74,3 +74,9 @@ class FileStorage:
             # delete the obj from objects
             del FileStorage.__objects[key]
     # -------------------------------------
+
+    # -------------------------------
+    def close(self):
+        """ call reloaad """
+        self.reload()
+    # -------------------------------------
