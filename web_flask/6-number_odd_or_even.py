@@ -43,8 +43,8 @@ def hbnb():
 def number_odd_or_even(n):
     """ return HTML page if n is an int """
     odd_or_even = "even" if n % 2 == 0 else "odd"
-    tmp = n=n, odd_or_even=odd_or_even
-    return render_template('6-number_odd_or_even.html', **tmp)
+    return render_template(
+        '6-number_odd_or_even.html', n=n, odd_or_even=odd_or_even)
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
