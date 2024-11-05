@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """ init file for flask"""
 from flask import Flask
 
