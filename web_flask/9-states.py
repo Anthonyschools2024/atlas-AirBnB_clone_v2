@@ -7,30 +7,20 @@ from models.state import State
 app = Flask(__name__)
 
 
-""" routes to requests"""
-@app.route('/states', strict_slashes=False)
-@app.route('/states/<id>', strict_slashes=False)
-def states(id=None):
-    """display list of states or cities of a state """
-    """ retrieve data from storage"""
+@app.route('/states_list', strict_slashes=False)
+def states_list():
+    """display list of states """
+    # retrieve data from storage
     states = storage.all(State).values()
     states = sorted(states, key=lambda state: state.name)
-    if id:
-        state = next((state for state in states if state.id == id), None)
-        """ render the 9-states.html file """
-        if state:
-            cities = sorted(state.cities, key=lambda city: city.name)
-            return render_template('9-states.html', state=state, cities=cities)
-        else:
-            return render_template('9-states.html', state=None)
-    return render_template('9-states.html', states=states)
+    # render the 7-states_list.html file
+    return render_template('7-states_list.html', states=states)
 
 
-""" clos session each time"""
 @app.teardown_appcontext
 def teardown_db(exception):
     """ closes the storage on teardown"""
     storage.close()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)  # Add debug=True here
